@@ -1,0 +1,16 @@
+.img {
+	transition: box-shadow 0.3s linear, transform 0.3s linear;
+	width: 100%;
+	height: 240px;
+	object-fit: cover;
+	border: 1px solid var(--accentColor);
+	border-radius: 5px;
+}
+
+.img:hover,
+.img:focus {
+	box-shadow: var(--boxShadow);
+	cursor: pointer;
+	transform: scale(1.1);
+}
+
