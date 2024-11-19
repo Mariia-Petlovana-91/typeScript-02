@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState ,FormEvent} from 'react';
 import './App.module.css';
 import getDataImages from '../../utils/api';
 import toast, { Toaster } from 'react-hot-toast';
+import { UnsplashImage } from '../../types';
 import Section from '../Section/Section';
 import SearchBar from '../SearchBar/SearchBar';
 import Loader from '../Loader/Loader';
@@ -11,16 +12,16 @@ import LoadMoreBtn from '../LoadMoreBtn/LoadMoreBtn';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 export default function App() {
-  const [imagesArray, setImagesArray] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [load, setLoad] = useState(false);
-  const [loaderBtn, setLoaderBtn] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(false);
-  const [page, setPage] = useState(1);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-	const [selectedImage, setSelectedImage] = useState(null);
+  const [imagesArray, setImagesArray] = useState<UnsplashImage[] | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [load, setLoad] = useState<boolean>(false);
+  const [loaderBtn, setLoaderBtn] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+	const [selectedImage, setSelectedImage] = useState<UnsplashImage | null>(null);
   
-  async function fetchImages(searchValue, pageNumber) {
+  async function fetchImages(searchValue:string, pageNumber:number) {
     try {
      setLoad(true);
      const data = await getDataImages(searchValue, pageNumber);
@@ -31,8 +32,8 @@ export default function App() {
     }
     setImagesArray((prevImages) => prevImages ? [...prevImages, ...data.results] : data.results);
     setLoaderBtn(pageNumber < data.total_pages);
-   } catch (error) {
-     toast.error(`${error.message}🚨`);
+   } catch (error:unknown) {
+     toast.error("Fetch error 🚨");
    } finally {
      setLoad(false);
     }
@@ -44,7 +45,8 @@ export default function App() {
     }
   }, [searchTerm, page]);
 
-  function onSearchSubmit(inputValue) {
+  function onSearchSubmit(e: FormEvent<HTMLFormElement>, inputValue: string): void {
+    e.preventDefault;
     setSearchTerm(inputValue);
     setImagesArray([]);
     setPage(1);
@@ -55,7 +57,7 @@ export default function App() {
     setPage((prevPage) => prevPage + 1);
   }
   
-  function openModal(ar) {
+  function openModal(ar:UnsplashImage) {
     setSelectedImage(ar);
     setModalIsOpen(true);
   }
@@ -65,7 +67,7 @@ export default function App() {
     setSelectedImage(null);
   }
 
-  function onImgClick(ar) {
+  function onImgClick(ar:UnsplashImage) {
     if (selectedImage && selectedImage.id === ar.id) {
       closeModal();
     } else {
@@ -95,27 +97,31 @@ export default function App() {
           position="bottom-right"
           reverseOrder={false}
         />
-        <ImageGallery array={imagesArray}
-                onImgClick={onImgClick}
+        {imagesArray && onImgClick && (
+         <ImageGallery 
+          array={imagesArray} 
+          onImgClick={onImgClick} 
          />
+        )}
         {loaderBtn &&
           <LoadMoreBtn
             onSearchNext={onClickLoadeMore}
           />}
         {errorMessage && <ErrorMessage />}
-
-        			{selectedImage && (
-				<ImageModal
-					isOpen={modalIsOpen}
-					onRequestClose={closeModal}
-					img={selectedImage.urls.regular}
-					alt={selectedImage.alt_description}
-					likes={selectedImage.likes}
-					links={selectedImage.links}
-					userFirstName={selectedImage.user.first_name}
-					userLastName={selectedImage.user.last_name}
-				/>
-			)}
+        {selectedImage && (
+          <ImageModal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          img={{
+            full: selectedImage.urls.full,
+            alt_description: selectedImage.alt_description,
+            likes: selectedImage.likes,
+            links: selectedImage.links,
+            userFirstName: selectedImage.user.first_name,
+            userLastName: selectedImage.user.last_name
+            }}
+           />
+        )}
       </Section>
     </>
   );

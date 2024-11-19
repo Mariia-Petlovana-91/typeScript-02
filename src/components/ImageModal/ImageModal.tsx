@@ -2,15 +2,25 @@ import css from '../ImageModal/ImageModal.module.css';
 import Modal from 'react-modal';
 Modal.setAppElement('#root');
 import { SlLike } from "react-icons/sl";
+import { UnsplashImage } from '../../types';
+
+interface ImageModalProps {
+  img: {
+    full: string;
+    alt_description: string | null;
+    likes: number;
+    links: string;
+    userFirstName: string;
+    userLastName: string;
+  };
+  isOpen: boolean;
+  onRequestClose: () => void;
+}
 
 export default function ImageModal({ isOpen,
   onRequestClose,
   img,
-  alt,
-  likes,
-  links,
-  userFirstName,
-  userLastName }) {
+}:ImageModalProps) {
 
   return (
     <Modal
@@ -29,8 +39,8 @@ export default function ImageModal({ isOpen,
         </button>
         <img
         className={css.modalImg}
-        src={img}
-        alt={alt}
+        src={img.full}
+        alt={img.alt_description  || "photo"}
         />
       </div>
       <div className={css.modalAboutEl}>
@@ -38,8 +48,8 @@ export default function ImageModal({ isOpen,
           <strong>
           Author: &#8201;
            </strong>
-          {userFirstName}&#8201;
-          {userLastName}
+          {img.userFirstName}&#8201;
+          {img.userLastName}
         </p>
           <p className={css.modalLikes}>
            <SlLike
@@ -47,9 +57,9 @@ export default function ImageModal({ isOpen,
             size={24}
             aria-label="Likes"
            />  &#8201;
-           &#8201;{likes}
+           &#8201;{img.likes}
          </p>
-	       <a href={links?.download || '#'}
+	       <a href={img.links || '#'}
 		       target="_blank"
 		       rel="noopener noreferrer"
 		       className={css.modalLink}>

@@ -1,24 +1,30 @@
 import css from '../SearchBar/SearchBar.module.css';
 import { BsSearch } from "react-icons/bs";
 import toast, { Toaster } from 'react-hot-toast';
-import { useState } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 
-export default function SearchBar({ onSubmit }) {
-	const [inputValue, setInputValue] = useState('');
+interface SearchBarProps {
+    onSubmit: (e: FormEvent<HTMLFormElement>, inputValue: string) => void;
+}
+
+export default function SearchBar({ onSubmit }:SearchBarProps) {
+	const [inputValue, setInputValue] = useState<string>('');
 	
-	function onInputChange(e) {
+	function onInputChange(e: ChangeEvent<HTMLInputElement>) {
        setInputValue(e.target.value);
 	}
 	
-	function handleSubmit(e) {
+	function handleSubmit(e:FormEvent<HTMLFormElement>) {
 	e.preventDefault();
 		if (inputValue.trim() === '') {
              toast.error("The field cannot be empty!🛑");
              return;
             }
-		onSubmit(inputValue);
+		onSubmit(e,inputValue);
 		setInputValue('');
+            if (e.target instanceof HTMLFormElement) {
             e.target.reset();
+           }
 	}
 
 	return (
