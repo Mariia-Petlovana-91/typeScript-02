@@ -9,9 +9,10 @@ interface ImageGalleryProps {
 
 export default function ImageGallery({ array, onImgClick }: ImageGalleryProps) {
     return (
-        <ul className="image-gallery">
+        <ul className={css.list}>
             {array.map((ar) => (
-                <li key={ar.id}>
+                <li className={css.itam}
+                    key={ar.id}>
                     <ImageCard img={ar} onImgClick={onImgClick} />
                 </li>
             ))}

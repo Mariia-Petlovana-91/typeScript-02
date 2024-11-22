@@ -14,5 +14,7 @@ export interface UnsplashImage {
         };
 	};
     likes: number;
-	links: string;
+    links: {
+        download:string;
+    } 
 }

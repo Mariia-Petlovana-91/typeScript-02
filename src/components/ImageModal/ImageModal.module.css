@@ -45,7 +45,7 @@
 	align-items: center;
 	width: 32px;
 	height: 32px;
-	background-color: white;
+	background-color: transparent;
 	border-radius: 5px;
 	border: 1px solid var(--accentColor);
 	transition: box-shadow 0.3s linear, background-color 0.3s linear;

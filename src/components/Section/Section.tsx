@@ -1,5 +1,10 @@
 import css from '../Section/Section.module.css';
-export default function Section({children}) {
+
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function Section({children}:Props) {
 	return (
 		<section className={css.sectionContainer}>
                 {children}

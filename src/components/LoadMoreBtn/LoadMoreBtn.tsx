@@ -1,7 +1,7 @@
 import css from './LoadMoreBtn.module.css';
 
 interface LoadMoreBtnProps {
-  onSearchNext: () => void;  // Типізація функції, яка не приймає параметрів і не повертає значення
+  onSearchNext: () => void;
 }
 
 export default function LoadMoreBtn({ onSearchNext }:LoadMoreBtnProps) {

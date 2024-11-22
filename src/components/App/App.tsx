@@ -46,7 +46,6 @@ export default function App() {
   }, [searchTerm, page]);
 
   function onSearchSubmit(e: FormEvent<HTMLFormElement>, inputValue: string): void {
-    e.preventDefault;
     setSearchTerm(inputValue);
     setImagesArray([]);
     setPage(1);

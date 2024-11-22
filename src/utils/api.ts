@@ -27,6 +27,7 @@ export default async function getDataImages<T = UnsplashResponse>(
                 Authorization: `Client-ID ${KEY_API}`,
             },
         });
+        console.log(response.data);
         return response.data;
     } catch (error: unknown ) {
         throw error;

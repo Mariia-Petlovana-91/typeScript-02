@@ -8,8 +8,11 @@ interface ImageModalProps {
   img: {
     full: string;
     alt_description: string | null;
+    links: {
+      download:string;
+    }
     likes: number;
-    links: string;
+    
     userFirstName: string;
     userLastName: string;
   };
@@ -24,7 +27,6 @@ export default function ImageModal({ isOpen,
 
   return (
     <Modal
-      ariaHideApp={false}
       className={css.modal}
       isOpen={isOpen}
       onRequestClose={onRequestClose}
@@ -59,8 +61,8 @@ export default function ImageModal({ isOpen,
            />  &#8201;
            &#8201;{img.likes}
          </p>
-	       <a href={img.links || '#'}
-		       target="_blank"
+	       <a href={img.links.download || '#'}
+		       target="target_blank"
 		       rel="noopener noreferrer"
 		       className={css.modalLink}>
           View the whole picture
